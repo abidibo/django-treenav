@@ -6,6 +6,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes import fields
 from django.core.cache import cache
 from django.urls import reverse
+from django.utils.encoding import python_2_unicode_compatible
 
 from mptt.managers import TreeManager
 from mptt.models import MPTTModel, TreeForeignKey
@@ -86,6 +87,7 @@ class MenuUnCacheQuerySet(TreeQuerySet):
 MenuItemManager = TreeManager.from_queryset(MenuUnCacheQuerySet)
 
 
+@python_2_unicode_compatible
 class MenuItem(MPTTModel):
 
     parent = TreeForeignKey('self', null=True, blank=True, related_name='children',
@@ -178,5 +180,5 @@ class MenuItem(MPTTModel):
         delete_cache()
         super(MenuItem, self).delete(*args, **kwargs)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.slug
